@@ -1,3 +1,4 @@
-python\venv
-csharp\bin
-csharp\obj
+/python/venv/
+/csharp/bin/
+/csharp/obj/
+/.vs/

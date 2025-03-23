@@ -1,4 +1,5 @@
 ﻿using Bogus;
+using CommandLine;
 using GenerateData;
 using System.Reflection;
 
@@ -48,10 +49,28 @@ var workflowStates = new List<string>
     "Archived 🗓"
 };
 
-Console.WriteLine("Generating Fake Workflow");
 
-var features = WorkflowSim.SimulateEpics();
+static void Main(string[] args)
+{
+    Parser.Default.ParseArguments<Options>(args)
+           .WithParsed<Options>(o =>
+           {
+               Console.WriteLine("Generating Fake Workflow");
 
-WriteToCsv(features, @"C:\temp\features.csv");
+               if (o.Verbose)
+               {
+                   Console.WriteLine($"Verbose output enabled. Current Arguments: -v {o.Verbose}");
+                   Console.WriteLine("Quick Start Example! App is in Verbose mode!");
+               }
+               else
+               {
+                   Console.WriteLine($"Current Arguments: -v {o.Verbose}");
+                   Console.WriteLine("Quick Start Example!");
+               }
+               var features = WorkflowSim.SimulateEpics();
+               WriteToCsv(features, o.Filename);
+               Console.WriteLine("Done");
 
-Console.WriteLine("Done");
+           });
+}
+
